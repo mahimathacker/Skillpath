@@ -1,3 +1,18 @@
+type Course = {
+    courseName: string
+    description: string
+    mainCategory: string
+    pricePaise: number
+    priceUsdCents: number
+    refundable: boolean
+}
+
+type CountryCode = "IN" | "US"
+
+type CountryResponse = {
+    country_code: CountryCode
+}
+
 export default function CoursesSection() {
     return (
         <section style={styles.section}>
