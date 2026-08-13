@@ -110,6 +110,10 @@ function formatPrice(course: Course, country: CountryCode): string {
     }).format(course.priceUsdCents / 100)
 }
 
+/**
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function CoursesSection({
     sectionHeading,
     accentColor,
