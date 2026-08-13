@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { addPropertyControls, ControlType } from "framer"
 
 type Course = {
     courseName: string
@@ -13,6 +14,11 @@ type CountryCode = "IN" | "US"
 
 type CountryResponse = {
     country_code: CountryCode
+}
+
+type CoursesSectionProps = {
+    sectionHeading: string
+    accentColor: string
 }
 
 const BASE_URL = "https://syncsphere-hiv6.onrender.com"
@@ -104,7 +110,10 @@ function formatPrice(course: Course, country: CountryCode): string {
     }).format(course.priceUsdCents / 100)
 }
 
-export default function CoursesSection() {
+export default function CoursesSection({
+    sectionHeading,
+    accentColor,
+}: CoursesSectionProps) {
     const [courses, setCourses] = useState<Course[]>([])
     const [country, setCountry] = useState<CountryCode | null>(null)
     const [coursesError, setCoursesError] = useState(false)
@@ -216,7 +225,7 @@ export default function CoursesSection() {
                 className="skillpath-course-heading"
                 style={styles.sectionHeading}
             >
-                Explore Our Courses
+                {sectionHeading}
             </h2>
 
             <div className="skillpath-course-grid">
@@ -225,12 +234,22 @@ export default function CoursesSection() {
                         key={`${course.courseName}-${index}`}
                         style={styles.card}
                     >
-                        <span style={styles.category}>
+                        <span
+                            style={{
+                                ...styles.category,
+                                color: accentColor,
+                            }}
+                        >
                             {course.mainCategory}
                         </span>
                         <h3 style={styles.courseName}>{course.courseName}</h3>
                         <p style={styles.description}>{course.description}</p>
-                        <p style={styles.price}>
+                        <p
+                            style={{
+                                ...styles.price,
+                                color: accentColor,
+                            }}
+                        >
                             {countryError || country === null
                                 ? "Pricing unavailable"
                                 : formatPrice(course, country)}
@@ -241,6 +260,22 @@ export default function CoursesSection() {
         </section>
     )
 }
+
+CoursesSection.defaultProps = {
+    sectionHeading: "Explore Our Courses",
+    accentColor: "#7C3AED",
+}
+
+addPropertyControls(CoursesSection, {
+    sectionHeading: {
+        type: ControlType.String,
+        title: "Heading",
+    },
+    accentColor: {
+        type: ControlType.Color,
+        title: "Accent",
+    },
+})
 
 const styles = {
     section: {
