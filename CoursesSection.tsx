@@ -118,6 +118,42 @@ export default function CoursesSection() {
         loadData()
     }, [])
 
+    if (loading) {
+        return (
+            <section style={styles.section}>
+                <style>{`
+                    @keyframes skillpath-spin {
+                        to {
+                            transform: rotate(360deg);
+                        }
+                    }
+                `}</style>
+                <div style={styles.spinner} />
+                <p style={styles.message}>Loading courses...</p>
+            </section>
+        )
+    }
+
+    if (coursesError) {
+        return (
+            <section style={styles.section}>
+                <div style={styles.errorBox}>
+                    <h2 style={styles.errorTitle}>We couldn't load the courses.</h2>
+                    <p style={styles.errorMessage}>Please try again later.</p>
+                </div>
+            </section>
+        )
+    }
+
+    if (courses.length === 0) {
+        return (
+            <section style={styles.section}>
+                <h2 style={styles.emptyTitle}>No courses available yet.</h2>
+                <p style={styles.emptyMessage}>Please check back soon.</p>
+            </section>
+        )
+    }
+
     return (
         <section style={styles.section}>
             <p style={styles.message}>Courses component</p>
@@ -130,10 +166,46 @@ const styles = {
         width: "100%",
         height: "100%",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        gap: "12px",
         backgroundColor: "#FFFFFF",
         fontFamily: "Inter, sans-serif",
+    },
+    spinner: {
+        width: "28px",
+        height: "28px",
+        border: "3px solid #E9E2F3",
+        borderTopColor: "#7C3AED",
+        borderRadius: "50%",
+        animation: "skillpath-spin 0.8s linear infinite",
+    },
+    errorBox: {
+        padding: "24px",
+        borderRadius: "12px",
+        backgroundColor: "#FEF3F2",
+        textAlign: "center",
+    },
+    errorTitle: {
+        margin: 0,
+        color: "#B42318",
+        fontSize: "20px",
+    },
+    errorMessage: {
+        margin: "8px 0 0",
+        color: "#6B6478",
+        fontSize: "16px",
+    },
+    emptyTitle: {
+        margin: 0,
+        color: "#1F1633",
+        fontSize: "20px",
+    },
+    emptyMessage: {
+        margin: 0,
+        color: "#6B6478",
+        fontSize: "16px",
     },
     message: {
         margin: 0,
