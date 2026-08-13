@@ -66,6 +66,24 @@ async function fetchCourses(): Promise<Course[]> {
     return data
 }
 
+async function fetchCountry(): Promise<CountryCode> {
+    const response = await fetch(`${BASE_URL}/assignment/country-code`, {
+        method: "GET",
+    })
+
+    if (!response.ok) {
+        throw new Error(`Country request failed with status ${response.status}`)
+    }
+
+    const data: unknown = await response.json()
+
+    if (!isCountryResponse(data)) {
+        throw new Error("Country response has an unexpected format")
+    }
+
+    return data.country_code
+}
+
 export default function CoursesSection() {
     return (
         <section style={styles.section}>
