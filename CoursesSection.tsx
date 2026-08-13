@@ -13,6 +13,8 @@ type CountryResponse = {
     country_code: CountryCode
 }
 
+const BASE_URL = "https://syncsphere-hiv6.onrender.com"
+
 function isCourse(value: unknown): value is Course {
     if (typeof value !== "object" || value === null) {
         return false
@@ -44,6 +46,24 @@ function isCountryResponse(value: unknown): value is CountryResponse {
     const response = value as Record<string, unknown>
 
     return response.country_code === "IN" || response.country_code === "US"
+}
+
+async function fetchCourses(): Promise<Course[]> {
+    const response = await fetch(`${BASE_URL}/assignment/course-data`, {
+        method: "GET",
+    })
+
+    if (!response.ok) {
+        throw new Error(`Course request failed with status ${response.status}`)
+    }
+
+    const data: unknown = await response.json()
+
+    if (!isCourseArray(data)) {
+        throw new Error("Course response has an unexpected format")
+    }
+
+    return data
 }
 
 export default function CoursesSection() {
