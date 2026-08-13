@@ -173,10 +173,53 @@ export default function CoursesSection() {
     }
 
     return (
-        <section style={styles.contentSection}>
-            <h2 style={styles.sectionHeading}>Explore Our Courses</h2>
+        <section
+            className="skillpath-course-section"
+            style={styles.contentSection}
+        >
+            <style>{`
+                .skillpath-course-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                    gap: 24px;
+                    width: 100%;
+                    max-width: 1120px;
+                    margin: 0 auto;
+                }
 
-            <div style={styles.courseGrid}>
+                @media (max-width: 900px) {
+                    .skillpath-course-section {
+                        padding: 56px 32px !important;
+                    }
+
+                    .skillpath-course-grid {
+                        grid-template-columns: repeat(2, minmax(0, 1fr));
+                    }
+                }
+
+                @media (max-width: 600px) {
+                    .skillpath-course-section {
+                        padding: 40px 20px !important;
+                    }
+
+                    .skillpath-course-heading {
+                        font-size: 30px !important;
+                    }
+
+                    .skillpath-course-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            `}</style>
+
+            <h2
+                className="skillpath-course-heading"
+                style={styles.sectionHeading}
+            >
+                Explore Our Courses
+            </h2>
+
+            <div className="skillpath-course-grid">
                 {courses.map((course, index) => (
                     <article
                         key={`${course.courseName}-${index}`}
@@ -258,14 +301,6 @@ const styles = {
         color: "#1F1633",
         fontSize: "36px",
         textAlign: "center",
-    },
-    courseGrid: {
-        display: "grid",
-        gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-        gap: "24px",
-        width: "100%",
-        maxWidth: "1120px",
-        margin: "0 auto",
     },
     card: {
         display: "flex",
