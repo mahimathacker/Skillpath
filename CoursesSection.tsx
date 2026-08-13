@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 type Course = {
     courseName: string
     description: string
@@ -85,6 +87,12 @@ async function fetchCountry(): Promise<CountryCode> {
 }
 
 export default function CoursesSection() {
+    const [courses, setCourses] = useState<Course[]>([])
+    const [country, setCountry] = useState<CountryCode | null>(null)
+    const [coursesError, setCoursesError] = useState(false)
+    const [countryError, setCountryError] = useState(false)
+    const [loading, setLoading] = useState(true)
+
     return (
         <section style={styles.section}>
             <p style={styles.message}>Courses component</p>
