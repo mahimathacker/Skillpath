@@ -86,6 +86,24 @@ async function fetchCountry(): Promise<CountryCode> {
     return data.country_code
 }
 
+function formatPrice(course: Course, country: CountryCode): string {
+    if (country === "IN") {
+        return new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency: "INR",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+        }).format(course.pricePaise / 100)
+    }
+
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(course.priceUsdCents / 100)
+}
+
 export default function CoursesSection() {
     const [courses, setCourses] = useState<Course[]>([])
     const [country, setCountry] = useState<CountryCode | null>(null)
@@ -155,8 +173,28 @@ export default function CoursesSection() {
     }
 
     return (
-        <section style={styles.section}>
-            <p style={styles.message}>Courses component</p>
+        <section style={styles.contentSection}>
+            <h2 style={styles.sectionHeading}>Explore Our Courses</h2>
+
+            <div style={styles.courseGrid}>
+                {courses.map((course, index) => (
+                    <article
+                        key={`${course.courseName}-${index}`}
+                        style={styles.card}
+                    >
+                        <span style={styles.category}>
+                            {course.mainCategory}
+                        </span>
+                        <h3 style={styles.courseName}>{course.courseName}</h3>
+                        <p style={styles.description}>{course.description}</p>
+                        <p style={styles.price}>
+                            {countryError || country === null
+                                ? "Pricing unavailable"
+                                : formatPrice(course, country)}
+                        </p>
+                    </article>
+                ))}
+            </div>
         </section>
     )
 }
@@ -206,6 +244,67 @@ const styles = {
         margin: 0,
         color: "#6B6478",
         fontSize: "16px",
+    },
+    contentSection: {
+        width: "100%",
+        minHeight: "100%",
+        boxSizing: "border-box",
+        padding: "64px 40px",
+        backgroundColor: "#FFFFFF",
+        fontFamily: "Inter, sans-serif",
+    },
+    sectionHeading: {
+        margin: "0 0 32px",
+        color: "#1F1633",
+        fontSize: "36px",
+        textAlign: "center",
+    },
+    courseGrid: {
+        display: "grid",
+        gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+        gap: "24px",
+        width: "100%",
+        maxWidth: "1120px",
+        margin: "0 auto",
+    },
+    card: {
+        display: "flex",
+        flexDirection: "column",
+        padding: "24px",
+        border: "1px solid #E9E2F3",
+        borderRadius: "14px",
+        backgroundColor: "#FFFFFF",
+    },
+    category: {
+        alignSelf: "flex-start",
+        padding: "6px 10px",
+        borderRadius: "999px",
+        backgroundColor: "#F3E8FF",
+        color: "#7C3AED",
+        fontSize: "13px",
+        fontWeight: 600,
+    },
+    courseName: {
+        margin: "18px 0 10px",
+        color: "#1F1633",
+        fontSize: "22px",
+        lineHeight: 1.3,
+    },
+    description: {
+        display: "-webkit-box",
+        WebkitBoxOrient: "vertical",
+        WebkitLineClamp: 2,
+        overflow: "hidden",
+        margin: 0,
+        color: "#6B6478",
+        fontSize: "15px",
+        lineHeight: 1.6,
+    },
+    price: {
+        margin: "20px 0 0",
+        color: "#7C3AED",
+        fontSize: "20px",
+        fontWeight: 700,
     },
     message: {
         margin: 0,
