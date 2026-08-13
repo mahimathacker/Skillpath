@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type Course = {
     courseName: string
@@ -92,6 +92,31 @@ export default function CoursesSection() {
     const [coursesError, setCoursesError] = useState(false)
     const [countryError, setCountryError] = useState(false)
     const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        async function loadData() {
+            const [coursesResult, countryResult] = await Promise.allSettled([
+                fetchCourses(),
+                fetchCountry(),
+            ])
+
+            if (coursesResult.status === "fulfilled") {
+                setCourses(coursesResult.value)
+            } else {
+                setCoursesError(true)
+            }
+
+            if (countryResult.status === "fulfilled") {
+                setCountry(countryResult.value)
+            } else {
+                setCountryError(true)
+            }
+
+            setLoading(false)
+        }
+
+        loadData()
+    }, [])
 
     return (
         <section style={styles.section}>
