@@ -284,7 +284,9 @@ addPropertyControls(CoursesSection, {
 const styles = {
     section: {
         width: "100%",
-        height: "100%",
+        minHeight: "320px",
+        boxSizing: "border-box",
+        padding: "40px 20px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
