@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import type { CSSProperties } from "react"
 import { addPropertyControls, ControlType } from "framer"
 
 type Course = {
@@ -288,7 +289,7 @@ addPropertyControls(CoursesSection, {
     },
 })
 
-const styles = {
+const styles: Record<string, CSSProperties> = {
     section: {
         width: "100%",
         minHeight: "320px",
