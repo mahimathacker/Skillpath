@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { addPropertyControls, ControlType } from "framer"
 
 type Course = {
+    courseCode: string
     courseName: string
     description: string
     mainCategory: string
@@ -31,6 +32,7 @@ function isCourse(value: unknown): value is Course {
     const course = value as Record<string, unknown>
 
     return (
+        typeof course.courseCode === "string" &&
         typeof course.courseName === "string" &&
         typeof course.description === "string" &&
         typeof course.mainCategory === "string" &&
@@ -159,7 +161,12 @@ export default function CoursesSection({
                         }
                     }
                 `}</style>
-                <div style={styles.spinner} />
+                <div
+                    style={{
+                        ...styles.spinner,
+                        borderTopColor: accentColor,
+                    }}
+                />
                 <p style={styles.message}>Loading courses...</p>
             </section>
         )
@@ -233,9 +240,9 @@ export default function CoursesSection({
             </h2>
 
             <div className="skillpath-course-grid">
-                {courses.map((course, index) => (
+                {courses.map((course) => (
                     <article
-                        key={`${course.courseName}-${index}`}
+                        key={course.courseCode}
                         style={styles.card}
                     >
                         <span
@@ -299,7 +306,6 @@ const styles = {
         width: "28px",
         height: "28px",
         border: "3px solid #E9E2F3",
-        borderTopColor: "#7C3AED",
         borderRadius: "50%",
         animation: "skillpath-spin 0.8s linear infinite",
     },
